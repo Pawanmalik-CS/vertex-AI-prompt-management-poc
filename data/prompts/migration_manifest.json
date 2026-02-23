@@ -1,0 +1,17 @@
+{
+  "migrations": [
+    {
+      "migration_id": "mig_dfcx_billing_billing_payment_query_dev_to_qa_20260223130915",
+      "source_prompt_id": "dfcx_billing_billing_payment_query_dev",
+      "target_prompt_id": "dfcx_billing_billing_payment_query_qa",
+      "source_env": "dev",
+      "target_env": "qa",
+      "source_version": 1,
+      "target_version": 1,
+      "operator": "pawan.malik",
+      "timestamp": "2026-02-23T13:09:15.334848Z",
+      "dry_run": false,
+      "status": "success"
+    }
+  ]
+}

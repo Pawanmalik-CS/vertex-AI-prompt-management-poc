@@ -113,7 +113,7 @@ def run_full_demo():
   AC3 ✅  Domain + Environment filtering (no cross-contamination)
   AC4 ✅  Migration CLI dev→qa with dry-run + manifest
   AC5 ✅  Version history + rollback demonstrated
-  DOC ✅  README to be generated separately
+  
     """)
 
 
