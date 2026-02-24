@@ -199,7 +199,7 @@ venv\Scripts\activate
 pip install typer rich faker python-dateutil tabulate
 
 # 2. Run full demo
-python main.py
+python main.py --demo 
 
 # 3. Individual commands
 python src/ingestion/ingest_all.py       # Ingest all prompts
