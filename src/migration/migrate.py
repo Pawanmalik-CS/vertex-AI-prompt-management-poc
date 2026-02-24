@@ -44,7 +44,7 @@ class MigrationEngine:
             json.dump(manifest, f, indent=2, default=str)
 
     def _timestamp(self) -> str:
-        return datetime.utcnow().isoformat() + "Z"
+        return f"{datetime.utcnow().isoformat()}Z"
 
     def _build_env_prompt_id(self, base_prompt_id: str, environment: str) -> str:
         """
@@ -228,22 +228,46 @@ class MigrationEngine:
 
 
 if __name__ == "__main__":
+    import argparse
+
+    # Terminal arguments setup kar rahe hain
+    parser = argparse.ArgumentParser(description="Vertex AI Prompt Migration CLI")
+    parser.add_argument(
+        "--id", 
+        type=str, 
+        help="The Prompt ID you want to migrate (e.g., dfcx_billing_billing_payment_query_dev)"
+    )
+    parser.add_argument(
+        "--dry-run", 
+        action="store_true", 
+        help="Run without making actual changes"
+    )
+    parser.add_argument(
+        "--history", 
+        action="store_true", 
+        help="Show the full migration manifest history"
+    )
+
+    args = parser.parse_args()
     engine = MigrationEngine()
 
-    # Demo 1: Dry Run
-    print("\n>>> DEMO 1: Dry Run (no changes)")
-    engine.migrate(
-        prompt_id="dfcx_billing_billing_payment_query",
-        dry_run=True
-    )
-
-    # Demo 2: Actual Migration dev → qa
-    print("\n>>> DEMO 2: Actual Migration dev → qa")
-    engine.migrate(
-        prompt_id="dfcx_billing_billing_payment_query",
-        dry_run=False
-    )
-
-    # Demo 3: Show manifest
-    print("\n>>> DEMO 3: Migration History")
-    engine.show_manifest()
+    # Agar user ne --history flag pass kiya hai
+    if args.history:
+        engine.show_manifest()
+    
+    # Agar user ne --id pass kiya hai
+    elif args.id:
+        if args.dry_run:
+            print(f"\n>>> [DRY RUN MODE] Initiating migration for: {args.id}")
+        else:
+            print(f"\n>>> [LIVE MODE] Initiating migration for: {args.id}")
+            
+        try:
+            engine.migrate(prompt_id=args.id, dry_run=args.dry_run)
+        except Exception as e:
+            print(f"\n❌ MIGRATION FAILED: {str(e)}")
+            
+    else:
+        # Agar user bina kisi flag ke script chalaye
+        print("Please provide a prompt ID using --id or view history using --history.")
+        print("Example: python migrate.py --id custom_account_update_handler_dev")
